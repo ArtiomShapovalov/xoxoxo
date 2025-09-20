@@ -1,14 +1,21 @@
 import { Image } from 'expo-image';
-import { Platform, View, StyleSheet, NativeModules } from 'react-native';
-import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
+import { 
+  Platform, 
+  View, 
+  StyleSheet, 
+  NativeModules, 
+  TouchableOpacity 
+ } from 'react-native';
+import React, { useState, useRef } from 'react';
+import Entypo from '@expo/vector-icons/Entypo';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { MainScreenWrapper } from '@/components/main-screen-wrapper'
 import { Board, GameResult, XShape, OShape } from '@/components/board'
-import { Link } from 'expo-router';
+import { TimerView, TimeValue, TimerHandle } from '@/components/timer-view'
+import { Leaderboard } from '@/components/leaderboard-modal'
 
 type Score = {
   x: number;
@@ -18,8 +25,17 @@ type Score = {
 const { API } = NativeModules;
 
 export default function HomeScreen() {
+  const router = useRouter();
   const [score, setScore] = useState<Score>({ x: 0, o: 0 });
+  const [isLeaderboardVisible, setLeaderboardVisible] = useState<boolean>(false);
+  const timerRef = useRef<TimerHandle>(null);
+
   const onGameResult = (gameResult: GameResult) => {
+    if (gameResult == 'playing') {
+      timerRef.current?.start();
+      return;
+    }
+
     let newScore = { ...score };
     
     if (gameResult == 'x') {
@@ -34,9 +50,17 @@ export default function HomeScreen() {
       console.log(userId);
       console.log(message);
     });
-    
+
+    timerRef.current?.stop();
     setScore(newScore);
   };
+
+  const showLeaderboard = (): void => {
+    setLeaderboardVisible(true);
+  };
+  const hideLeaderboard = (): void => {
+    setLeaderboardVisible(false);
+  }
 
   return (
     <MainScreenWrapper>
@@ -54,7 +78,23 @@ export default function HomeScreen() {
           {score.o}
         </ThemedText>
       </View>
+
       <Board onGameResult={onGameResult} />
+
+      <View style={styles.bottomContainer}>
+        <TimerView ref={timerRef} />
+        <TouchableOpacity onPress={showLeaderboard} style={styles.leaderboardButton}>
+          <Entypo name="list" size={32} color="#060606" />
+        </TouchableOpacity>
+      </View>
+
+      <Leaderboard 
+        isVisible={isLeaderboardVisible} 
+        onClose={hideLeaderboard}
+        users={ 
+          Array(40).fill().map((item, index) => ({ id: index, wins: 1, loses: 0, seconds: 1, milliseconds: 70 }))
+        }
+      />
     </MainScreenWrapper>
   );
 }
@@ -69,6 +109,17 @@ const styles = StyleSheet.create({
   scoreLogo: {
     width: 50,
     height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bottomContainer: {
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  leaderboardButton: {
     justifyContent: 'center',
     alignItems: 'center',
   }

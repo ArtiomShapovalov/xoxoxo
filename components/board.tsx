@@ -89,10 +89,11 @@ export function Board({
 
     const result = checkWinner(newCells);
 
+    onGameResult(result);
+
     if (result != 'playing') {
       setGameResult(result);
       setCells(Array(9).fill().map(() => ({ x: false, o: false })));
-      onGameResult(result);
       return;
     }
 
