@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { Platform, View, StyleSheet } from 'react-native';
+import { Platform, View, StyleSheet, NativeModules } from 'react-native';
 import React, { useState } from 'react';
 
 import { HelloWave } from '@/components/hello-wave';
@@ -15,15 +15,26 @@ type Score = {
   o: number;
 };
 
+const { API } = NativeModules;
+
 export default function HomeScreen() {
   const [score, setScore] = useState<Score>({ x: 0, o: 0 });
   const onGameResult = (gameResult: GameResult) => {
     let newScore = { ...score };
+    
     if (gameResult == 'x') {
       newScore.x += 1;
     } else if (gameResult == 'o') {
       newScore.o += 1;
     }
+
+    API.sendGameResult(gameResult, (error, userId, message) => {
+      console.log("[API] POST GameResult:")
+      console.log(error);
+      console.log(userId);
+      console.log(message);
+    });
+    
     setScore(newScore);
   };
 
