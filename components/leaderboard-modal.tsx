@@ -21,6 +21,7 @@ type GameSession = {
   seconds: number;
   milliseconds: number;
   winCount: number;
+  isEnded: boolean;
 };
 
 const { API } = NativeModules;
@@ -30,6 +31,7 @@ export function Leaderboard({
   onClose,
 }: LeaderboardProps) {
   const [gameSessions, setGameSessions] = useState<GameSession[]>([]);
+  const [winRatio, setWinRatio] = useState<number>(100);
   const formatTime = (seconds: number, milliseconds: number): string => {
     const totalSeconds = seconds + milliseconds / 1000;
     return `${totalSeconds.toFixed(2)}s`;
@@ -41,6 +43,16 @@ export function Leaderboard({
     API.getSessions((error, sessions) => {
       console.log("[API] Sessions:");
       console.log(sessions);
+      let totalWinCount = 0
+      sessions.map((session) => (totalWinCount += session.winCount));
+      const totalLoseCount = sessions.filter((session) => (session.isEnded)).length
+      console.log(totalWinCount);
+      console.log(totalLoseCount);
+      if (totalLoseCount > 0) {
+        setWinRatio(
+          Math.floor(totalWinCount * 100 / (totalWinCount + totalLoseCount))
+        );
+      }
       setGameSessions(sessions.filter((session) => (session.winCount > 0)));
     });
   }, [isVisible]);
@@ -107,6 +119,7 @@ export function Leaderboard({
       <SafeAreaView style={styles.modalContent}>
         <View style={styles.header}>
           <Text style={styles.title}>Leaderboard</Text>
+          <Text>{'W/L: ' + winRatio + '%'}</Text>
           <TouchableOpacity onPress={onClose} style={styles.closeButton}>
             <Text style={styles.closeText}>✕</Text>
           </TouchableOpacity>

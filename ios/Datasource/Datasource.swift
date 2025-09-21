@@ -93,6 +93,10 @@ final class Datasource {
     
     /// Lost, mark the last session as ended
     if isEnded {
+      if lastSession.winCount == 0 {
+        return
+      }
+      
       lastSession.isEnded = true
       try? context.save()
       createGameSession(userId: userId)
@@ -124,7 +128,8 @@ final class Datasource {
       ["userId": $0.userId,
        "seconds": $0.seconds,
        "milliseconds": $0.milliseconds,
-       "winCount": $0.winCount]
+       "winCount": $0.winCount,
+       "isEnded": $0.isEnded]
     }
   }
   

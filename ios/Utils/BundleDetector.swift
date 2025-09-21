@@ -8,7 +8,6 @@
 import Foundation
 
 final class BundleDetector {
-    
     public static func get() -> Bundle {
         Bundle(for: BundleDetector.self)
     }

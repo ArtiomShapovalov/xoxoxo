@@ -36,7 +36,9 @@ final class API: NSObject {
     }
   }
   
-  @objc func sendGameResult(_ result: String, onResponse: @escaping RCTResponseSenderBlock) {
+  @objc func sendGameResult(_ result: String,
+                            onResponse: @escaping RCTResponseSenderBlock)
+  {
     Task {
       let body = ["user-id": userId, "result": result]
       var rnResult = [NSNull(), userId]
@@ -60,7 +62,10 @@ final class API: NSObject {
     }
   }
   
-  @objc func saveProgress(_ isEnded: NSNumber, seconds: NSNumber, milliseconds: NSNumber) {
+  @objc func saveProgress(_ isEnded: NSNumber,
+                          seconds: NSNumber,
+                          milliseconds: NSNumber)
+  {
     Task {
       await datasource?.updateGameSession(userId: userId,
                                          seconds: seconds.intValue,
@@ -71,7 +76,7 @@ final class API: NSObject {
   
   @objc func getSessions(_ onCompletion: @escaping RCTResponseSenderBlock) {
     Task {
-      let sessions = await datasource?.getGameSessions()
+      let sessions = await datasource?.getGameSessions() ?? []
       onCompletion([NSNull(), sessions])
     }
   }

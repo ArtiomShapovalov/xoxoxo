@@ -16,6 +16,7 @@ import { MainScreenWrapper } from '@/components/main-screen-wrapper'
 import { Board, GameResult, XShape, OShape } from '@/components/board'
 import { TimerView, TimeValue, TimerHandle } from '@/components/timer-view'
 import { Leaderboard } from '@/components/leaderboard-modal'
+import { useThemeColor } from '@/hooks/use-theme-color';
 
 type Score = {
   x: number;
@@ -44,12 +45,11 @@ export default function HomeScreen() {
       newScore.o += 1;
     }
 
-    const { seconds, milliseconds } = timerRef.current?.getTimeValue();
-    
-    console.log('--------');
-    console.log(seconds);
-    console.log(milliseconds);
-    API.saveProgress(gameResult == 'o', seconds, milliseconds);
+    if (gameResult != 'draw') {
+      const { seconds, milliseconds } = timerRef.current?.getTimeValue();
+      API.saveProgress(gameResult == 'o', seconds, milliseconds);
+    }
+
     API.sendGameResult(gameResult, (error, userId, message) => {
       console.log("[API] POST GameResult:")
       console.log(error);
@@ -66,7 +66,8 @@ export default function HomeScreen() {
   };
   const hideLeaderboard = (): void => {
     setLeaderboardVisible(false);
-  }
+  };
+  const iconColor = useThemeColor({}, 'icon');
 
   return (
     <MainScreenWrapper>
@@ -90,7 +91,7 @@ export default function HomeScreen() {
       <View style={styles.bottomContainer}>
         <TimerView ref={timerRef} />
         <TouchableOpacity onPress={showLeaderboard} style={styles.leaderboardButton}>
-          <Entypo name="list" size={32} color="#060606" />
+          <Entypo name="list" size={32} color={iconColor} />
         </TouchableOpacity>
       </View>
 
