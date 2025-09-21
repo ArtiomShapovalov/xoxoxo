@@ -36,10 +36,14 @@ export const TimerView = forwardRef<TimerHandle, TimerProps>(({
   const stop = () => {
     setRunning(false);
   };
+  const getTimeValue = (): TimeValue => {
+    return { seconds: seconds, milliseconds: milliseconds };
+  } 
 
   useImperativeHandle(ref, () => ({
     start, 
     stop,
+    getTimeValue,
   }));
 
   const formatTime = (secs: number, millis: number): string => {

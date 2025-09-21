@@ -17,6 +17,11 @@
 		A42CC6052E7EB9880000060C /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42CC6042E7EB9880000060C /* String.swift */; };
 		A42CC6082E7EBCCE0000060C /* GameResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42CC6072E7EBCCE0000060C /* GameResult.swift */; };
 		A42CC60A2E7EC0A00000060C /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42CC6092E7EC0A00000060C /* UserDefaults.swift */; };
+		A42CC60E2E7F2B230000060C /* UserData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A42CC60C2E7F2B230000060C /* UserData.xcdatamodeld */; };
+		A4A81C9F2E7F2C9F000299E1 /* Datasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A81C9E2E7F2C9F000299E1 /* Datasource.swift */; };
+		A4A81CA12E7F2D02000299E1 /* BundleDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A81CA02E7F2D02000299E1 /* BundleDetector.swift */; };
+		A4A81CB02E7F3D60000299E1 /* XOXGameSession+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A81CAF2E7F3D60000299E1 /* XOXGameSession+CoreDataProperties.swift */; };
+		A4A81CB12E7F3D60000299E1 /* XOXGameSession+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A81CAE2E7F3D60000299E1 /* XOXGameSession+CoreDataClass.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		DA0E8FF1187A0662F9F2F570 /* libPods-xoxox.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A5A4DF3A3741741FC797524C /* libPods-xoxox.a */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
@@ -35,6 +40,11 @@
 		A42CC6042E7EB9880000060C /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		A42CC6072E7EBCCE0000060C /* GameResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameResult.swift; sourceTree = "<group>"; };
 		A42CC6092E7EC0A00000060C /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
+		A42CC60D2E7F2B230000060C /* UserData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserData.xcdatamodel; sourceTree = "<group>"; };
+		A4A81C9E2E7F2C9F000299E1 /* Datasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Datasource.swift; sourceTree = "<group>"; };
+		A4A81CA02E7F2D02000299E1 /* BundleDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleDetector.swift; sourceTree = "<group>"; };
+		A4A81CAE2E7F3D60000299E1 /* XOXGameSession+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XOXGameSession+CoreDataClass.swift"; sourceTree = "<group>"; };
+		A4A81CAF2E7F3D60000299E1 /* XOXGameSession+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XOXGameSession+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A5A4DF3A3741741FC797524C /* libPods-xoxox.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-xoxox.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = xoxox/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
@@ -59,6 +69,7 @@
 		13B07FAE1A68108700A75B9A /* xoxox */ = {
 			isa = PBXGroup;
 			children = (
+				A42CC60B2E7F2AFB0000060C /* Datasource */,
 				A42CC6062E7EBC960000060C /* Codable */,
 				A42CC6012E7EB8370000060C /* Utils */,
 				F11748412D0307B40044C1D9 /* AppDelegate.swift */,
@@ -135,6 +146,7 @@
 				A42CC6022E7EB84C0000060C /* Fetcher.swift */,
 				A42CC6042E7EB9880000060C /* String.swift */,
 				A42CC6092E7EC0A00000060C /* UserDefaults.swift */,
+				A4A81CA02E7F2D02000299E1 /* BundleDetector.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -145,6 +157,17 @@
 				A42CC6072E7EBCCE0000060C /* GameResult.swift */,
 			);
 			path = Codable;
+			sourceTree = "<group>";
+		};
+		A42CC60B2E7F2AFB0000060C /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				A42CC60C2E7F2B230000060C /* UserData.xcdatamodeld */,
+				A4A81C9E2E7F2C9F000299E1 /* Datasource.swift */,
+				A4A81CAE2E7F3D60000299E1 /* XOXGameSession+CoreDataClass.swift */,
+				A4A81CAF2E7F3D60000299E1 /* XOXGameSession+CoreDataProperties.swift */,
+			);
+			path = Datasource;
 			sourceTree = "<group>";
 		};
 		BB2F792B24A3F905000567C9 /* Supporting */ = {
@@ -358,11 +381,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4A81CA12E7F2D02000299E1 /* BundleDetector.swift in Sources */,
+				A42CC60E2E7F2B230000060C /* UserData.xcdatamodeld in Sources */,
 				A42CC6052E7EB9880000060C /* String.swift in Sources */,
 				A42CC6082E7EBCCE0000060C /* GameResult.swift in Sources */,
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
 				A42CC5FE2E7EB2570000060C /* API.m in Sources */,
 				A42CC60A2E7EC0A00000060C /* UserDefaults.swift in Sources */,
+				A4A81C9F2E7F2C9F000299E1 /* Datasource.swift in Sources */,
+				A4A81CB02E7F3D60000299E1 /* XOXGameSession+CoreDataProperties.swift in Sources */,
+				A4A81CB12E7F3D60000299E1 /* XOXGameSession+CoreDataClass.swift in Sources */,
 				A42CC6002E7EB2720000060C /* API.swift in Sources */,
 				A42CC6032E7EB84C0000060C /* Fetcher.swift in Sources */,
 				74DE586199499F5337A5F9D5 /* ExpoModulesProvider.swift in Sources */,
@@ -578,6 +606,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		A42CC60C2E7F2B230000060C /* UserData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A42CC60D2E7F2B230000060C /* UserData.xcdatamodel */,
+			);
+			currentVersion = A42CC60D2E7F2B230000060C /* UserData.xcdatamodel */;
+			path = UserData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 83CBB9F71A601CBA00E9B192 /* Project object */;
 }

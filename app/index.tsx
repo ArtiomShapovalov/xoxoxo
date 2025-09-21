@@ -44,6 +44,12 @@ export default function HomeScreen() {
       newScore.o += 1;
     }
 
+    const { seconds, milliseconds } = timerRef.current?.getTimeValue();
+    
+    console.log('--------');
+    console.log(seconds);
+    console.log(milliseconds);
+    API.saveProgress(gameResult == 'o', seconds, milliseconds);
     API.sendGameResult(gameResult, (error, userId, message) => {
       console.log("[API] POST GameResult:")
       console.log(error);
@@ -91,9 +97,6 @@ export default function HomeScreen() {
       <Leaderboard 
         isVisible={isLeaderboardVisible} 
         onClose={hideLeaderboard}
-        users={ 
-          Array(40).fill().map((item, index) => ({ id: index, wins: 1, loses: 0, seconds: 1, milliseconds: 70 }))
-        }
       />
     </MainScreenWrapper>
   );

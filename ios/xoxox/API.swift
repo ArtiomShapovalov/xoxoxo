@@ -14,6 +14,7 @@ final class API: NSObject {
   }
   
   private let fetcher = Fetcher()
+  private var datasource: Datasource?
   private let decoder = JSONDecoder()
   private var userId: String {
     let ud = UserDefaults.standard
@@ -26,6 +27,13 @@ final class API: NSObject {
     let id = UUID().uuidString
     ud.set(id, forKey: key)
     return id
+  }
+  
+  override init() {
+    super.init()
+    Task {
+      datasource = await Datasource()
+    }
   }
   
   @objc func sendGameResult(_ result: String, onResponse: @escaping RCTResponseSenderBlock) {
@@ -49,6 +57,22 @@ final class API: NSObject {
       } catch {
         rnResult.append("Request not handled")
       }
+    }
+  }
+  
+  @objc func saveProgress(_ isEnded: NSNumber, seconds: NSNumber, milliseconds: NSNumber) {
+    Task {
+      await datasource?.updateGameSession(userId: userId,
+                                         seconds: seconds.intValue,
+                                         milliseconds: milliseconds.intValue,
+                                         isEnded: isEnded.boolValue)
+    }
+  }
+  
+  @objc func getSessions(_ onCompletion: @escaping RCTResponseSenderBlock) {
+    Task {
+      let sessions = await datasource?.getGameSessions()
+      onCompletion([NSNull(), sessions])
     }
   }
   

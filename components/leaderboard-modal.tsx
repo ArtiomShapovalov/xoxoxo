@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -6,65 +6,96 @@ import {
   StyleSheet,
   TouchableOpacity,
   Modal,
+  NativeModules,
   SafeAreaView,
 } from 'react-native';
 import { ThemedText } from '@/components/themed-text'
 
-interface User {
-  id: number;
-  wins: number;
-  loses: number;
-  seconds: number;
-  milliseconds: number;
-}
-
 interface LeaderboardProps {
   isVisible: boolean;
   onClose: () => void;
-  users: User[];
 }
+
+type GameSession = {
+  userId: string;
+  seconds: number;
+  milliseconds: number;
+  winCount: number;
+};
+
+const { API } = NativeModules;
 
 export function Leaderboard({
   isVisible,
   onClose,
-  users,
 }: LeaderboardProps) {
+  const [gameSessions, setGameSessions] = useState<GameSession[]>([]);
   const formatTime = (seconds: number, milliseconds: number): string => {
     const totalSeconds = seconds + milliseconds / 1000;
     return `${totalSeconds.toFixed(2)}s`;
   };
 
+  const fetchSessions = useCallback(() => {
+    if (!isVisible) return;
+
+    API.getSessions((error, sessions) => {
+      console.log("[API] Sessions:");
+      console.log(sessions);
+      setGameSessions(sessions.filter((session) => (session.winCount > 0)));
+    });
+  }, [isVisible]);
+
+  useEffect(() => {
+    if (isVisible) {
+      fetchSessions();
+    }
+  }, [isVisible, fetchSessions]);
+
   const content = () => {
-    if (users.length == 0) {
+    if (gameSessions.length == 0) {
       return ( 
         <View style={styles.emptyViewWrapper}>
           <ThemedText type='title'>
-            No scores yet
+            No game sessions
           </ThemedText>
         </View>
       );
     }
 
+    const getMedal = (index: number): string => {
+      if (index == 0) {
+        return '🥇';
+      } else if (index == 1) {
+        return '🥈';
+      } else if (index == 2) {
+        return '🥉';
+      }
+      return '';
+    }
+
     return (
       <ScrollView style={styles.scrollView}>
-        {users.map((user) => (
-          <View key={user.id} style={styles.userItem}>
-            <View style={styles.userInfo}>
-              <Text style={styles.userName}>{user.id}</Text>
-              <Text style={styles.userTime}>
-                Time: {formatTime(user.seconds, user.milliseconds)}
+        {gameSessions.map((session, index) => (
+          <View key={session.userId + index} style={styles.sessionItem}>
+            <View style={styles.sessionInfo}>
+              <Text style={styles.sessionUserId}>
+                {session.userId.slice(0, 8) + getMedal(index)}
+              </Text>
+              <Text style={styles.time}>
+                Time: {formatTime(session.seconds, session.milliseconds)}
               </Text>
             </View>
             
             <View style={styles.stats}>
-              <Text style={styles.wins}>Wins: {user.wins}</Text>
-              <Text style={styles.loses}>Loses: {user.loses}</Text>
+              <Text style={styles.wins}>Wins: {session.winCount}</Text>
             </View>
           </View>
         ))}
       </ScrollView>
     );
   };
+
+  console.log('leaderboard rendered');
 
   return (
     <Modal
@@ -122,7 +153,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
-  userItem: {
+  sessionItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -131,16 +162,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e9ecef',
   },
-  userInfo: {
+  sessionInfo: {
     flex: 1,
   },
-  userName: {
+  sessionUserId: {
     fontSize: 16,
     fontWeight: '600',
     color: '#2c3e50',
     marginBottom: 4,
   },
-  userTime: {
+  time: {
     fontSize: 14,
     color: '#7f8c8d',
   },
@@ -152,10 +183,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#27ae60',
     marginBottom: 2,
-  },
-  loses: {
-    fontSize: 14,
-    color: '#e74c3c',
   },
 });
 
