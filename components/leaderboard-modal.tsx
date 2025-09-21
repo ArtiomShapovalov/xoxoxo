@@ -91,7 +91,7 @@ export function Leaderboard({
           <View 
             key={session.userId + index} 
             style={{
-              backgroundColor: session.isEnded ? '#f8f9fa' : '#f0f9f0', 
+              backgroundColor: session.isEnded ? 'white' : '#f0f9f0', 
               ...styles.sessionItem
             }}
           >

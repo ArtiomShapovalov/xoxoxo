@@ -259,6 +259,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     flex: '100%', 
+    maxWidth: 640,
   },
   cell: {
     aspectRatio: 1, 
