@@ -88,7 +88,13 @@ export function Leaderboard({
     return (
       <ScrollView style={styles.scrollView}>
         {gameSessions.map((session, index) => (
-          <View key={session.userId + index} style={styles.sessionItem}>
+          <View 
+            key={session.userId + index} 
+            style={{
+              backgroundColor: session.isEnded ? '#f8f9fa' : '#f0f9f0', 
+              ...styles.sessionItem
+            }}
+          >
             <View style={styles.sessionInfo}>
               <Text style={styles.sessionUserId}>
                 {session.userId.slice(0, 8) + getMedal(index)}
@@ -171,7 +177,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 15,
-    backgroundColor: '#f8f9fa',
     borderWidth: 1,
     borderColor: '#e9ecef',
   },
